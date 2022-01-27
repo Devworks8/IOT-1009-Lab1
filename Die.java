@@ -65,6 +65,7 @@ public class Die
             if (sideUp == 20)
             {
                 System.out.println("Nat 20! Critical success!");
+                
             }
             else if (sideUp == 1)
             {
