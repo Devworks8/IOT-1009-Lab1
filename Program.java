@@ -31,6 +31,28 @@ public class Program
 
     public static void Yahtzee()
     {
+        final Die[] dice = new Die[]{new Die.DieBuilder().build(), new Die.DieBuilder().build(), new Die.DieBuilder().build(), new Die.DieBuilder().build(), new Die.DieBuilder().build()};
+        System.out.println("\nCreating 5d6...");
 
+        boolean yahtzee = false;
+        int count = 1;
+        while (yahtzee == false)
+        {
+            for (Die die : dice)
+            {
+                die.roll();
+            }
+
+            if (dice[0].getSideUp() == dice[1].getSideUp() && dice[1].getSideUp() == dice[2].getSideUp() && dice[2].getSideUp() == dice[3].getSideUp() && dice[3].getSideUp() == dice[4].getSideUp())
+            {
+                yahtzee = true;
+            }
+            else
+            {
+                count += 1;
+            }
+        }
+
+        System.out.println(String.format("YAHTZEE! It took %d rolls", count));
     }
 }
