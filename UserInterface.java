@@ -31,7 +31,7 @@ public class UserInterface
                     showCustomMenuInterface();
                     break;
                 case 3:
-                    System.out.println("\nNot Implemented yet...");
+                    Program.Yahtzee();
                     break;
                 default:
                     break;
