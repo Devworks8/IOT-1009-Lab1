@@ -18,15 +18,5 @@ public class Program
 
         System.out.print("\n");
         d20.setSideUp(20);
-
-        // System.out.println(d6.getType());
-        // System.out.println(d6.getSideUp());
-        // d6.roll();
-        // d6.roll();
-        // d6.roll();
-        // d6.roll();
-        // d6.roll();
-        // System.out.println(d6.getSideUp());
-        // System.out.println(d6.toString());
     }
 }

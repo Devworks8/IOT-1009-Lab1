@@ -13,18 +13,22 @@ public class Die
         this.sideUp = builder.getSideUp();
     }
 
+    // Get the die type ie: d20
     public String getType()
     {
         return "d" + numSides;
     }
 
+    // Get the current side up
     public int getSideUp()
     {
         return sideUp;
     }
 
+    // Set the current side up
     public void setSideUp(int value)
     {
+        // Check if the value provided is within the range of the current die, if not leave it as is
         if (value >= numSides || value <= numSides)
         {
             sideUp = value;
@@ -33,6 +37,7 @@ public class Die
         }
     }
 
+    // Get the total number of side of the die
     public int getNumSides()
     {
         if (numSides < 2)
@@ -42,6 +47,7 @@ public class Die
         return 0;
     }
 
+    // Roll the die
     public void roll()
     {
         sideUp = (int)(Math.random() * numSides + 1);
@@ -112,6 +118,7 @@ public class Die
             {
                 int delta = 0;
                 int suggestion = 0;
+                // If the numSides requested isn't valid, find and provide the first die closest to numSides
                 for (int size : validSizes)
                 {
                     if (delta == 0)
@@ -144,27 +151,25 @@ public class Die
             }
         }
 
+        // Get the current side up
         private int getSideUp()
         {
             return sideUp;
         }
 
+        // Get the total number of sides
         private int getNumSides()
         {
             return numSides;
         }
 
+        // Set the current side up
         private int setSideUp()
         {
-            int value = (int)(Math.random() * numSides + 1);
-            if (value < 1 || value > numSides)
-            {
-                return 0;
-            }
-                
             return (int)(Math.random() * numSides + 1);
         }
 
+        // Build and return a new die object
         public Die build()
         {
             Die die = new Die(this);
