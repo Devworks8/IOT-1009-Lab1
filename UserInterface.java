@@ -48,11 +48,14 @@ public class UserInterface
     {
         Scanner uInput = new Scanner(System.in);
         int input = 0;
-        String customDice;
+        String customDice = null;
+        String oldCustomDice = null;
 
         do 
         {
             System.out.println("\nCustom Menu");
+            System.out.println("-------------------------");
+            System.out.println(String.format("Current dice set: %s", oldCustomDice));
             System.out.println("-------------------------");
             System.out.println("(1) Create Dice");
             System.out.println("(2) Reset Dice");
@@ -73,12 +76,20 @@ public class UserInterface
                     System.out.println("Create three d20 dice - > 3d20");
                     System.out.println("Create one d4 and five d8 dice -> 1d4;5d8");
                     System.out.println("---------------------------------------------");
+                    System.out.println("Enter 0 to cancel");
+                    System.out.println("---------------------------------------------");
                     System.out.print("How many die do you want? ");
                     customDice = uInput.next();
-                    new Die.DieBuilder(customDice, true).build();
+                    
+                    if (!customDice.equals("0"))
+                    {
+                        new Die.DieBuilder(customDice, true).build();
+                        oldCustomDice = customDice;
+                    }
                     break;
                 case 2:
                     Die.DieBuilder.resetDice();
+                    oldCustomDice = null;
                     break;
                 case 3:
                     System.out.println("\n");
