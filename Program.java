@@ -8,9 +8,9 @@ public class Program
     public static void RunLab()
     {
         // Create a d6, d20 and pecentile die
-        Die d6 = new Die.DieBuilder().build();
-        Die d20 = new Die.DieBuilder(20).build();
-        Die d100 = new Die.DieBuilder(100).build();
+        Die d6 = new Die.DieBuilder(true).build();
+        Die d20 = new Die.DieBuilder(20, true).build();
+        Die d100 = new Die.DieBuilder(100, true).build();
 
         // Print the current side up
         System.out.println(d6.toString());
@@ -31,8 +31,8 @@ public class Program
 
     public static void Yahtzee()
     {
-        final Die[] dice = new Die[]{new Die.DieBuilder().build(), new Die.DieBuilder().build(), new Die.DieBuilder().build(), new Die.DieBuilder().build(), new Die.DieBuilder().build()};
-        System.out.println("\nCreating 5d6...");
+        final Die[] dice = new Die[]{new Die.DieBuilder(false).build(), new Die.DieBuilder(false).build(), new Die.DieBuilder(false).build(), new Die.DieBuilder(false).build(), new Die.DieBuilder(false).build()};
+        System.out.println("\nCreated 5d6...");
 
         boolean yahtzee = false;
         int count = 1;

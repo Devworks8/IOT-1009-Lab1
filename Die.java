@@ -1,16 +1,17 @@
-import java.util.Arrays;
-
+import java.util.*;
 import javax.lang.model.util.ElementScanner6;
 
 public class Die
 {
     private final int numSides;
     private int sideUp;
+    private boolean showRoll;
 
     private Die(DieBuilder builder)
     {
         this.numSides = builder.getNumSides();
         this.sideUp = builder.getSideUp();
+        this.showRoll = builder.showRoll;
     }
 
     // Get the die type ie: d20
@@ -51,6 +52,15 @@ public class Die
     public void roll()
     {
         sideUp = (int)(Math.random() * numSides + 1);
+        if (showRoll)
+        {
+            rollMessage(numSides);
+        }
+    }
+ 
+    // Display roll message
+    private void rollMessage(int numSides)
+    {
         if (numSides != 100)
         {
             System.out.println(String.format("Rolling the %s...", getType()));
@@ -98,60 +108,47 @@ public class Die
     // Die Builder code
     public static class DieBuilder
     {
-        private final int numSides;
-        private final int sideUp;
+        private int numSides;
+        private int sideUp;
+        private boolean showRoll;
         private final int[] validSizes = new int[] {4, 6, 8, 10, 12, 20, 100};
+        private static List<Die> customDice = new ArrayList<Die>();
         
-        public DieBuilder()
+        public DieBuilder(boolean showRoll)
         {
             numSides = 6;
             sideUp = setSideUp();
+            this.showRoll = showRoll;
             System.out.println(String.format("Creating a default d%d...", numSides));
         }
 
-        public DieBuilder(int numSides)
+        public DieBuilder(int numSides, boolean showRoll)
         {
-            if (Arrays.stream(validSizes).anyMatch(x -> x == numSides))
+            this.showRoll = showRoll;
+            displayBuildMessage(numSides);
+        }
+
+        public DieBuilder(String customDice, boolean showRoll)
+        {
+            this.showRoll = showRoll;
+            String[] dice = customDice.split(";");
+
+            for (String die : dice)
             {
-                this.numSides = numSides;
-            }
-            else
-            {
-                int delta = 0;
-                int suggestion = 0;
-                // If the numSides requested isn't valid, find and provide the first die closest to numSides
-                for (int size : validSizes)
+                String[] dieSet = die.split("d");
+                for (int i=0; i < Integer.parseInt(dieSet[0]); ++i)
                 {
-                    if (delta == 0)
-                    {
-                        delta = Math.abs(numSides - size);
-                        suggestion = size;
-                    }
-                    else
-                    {
-                        if (Math.abs(numSides - size) < delta)
-                        {
-                            delta = Math.abs(numSides - size);
-                            suggestion = size;
-                        }
-                    }
+                    displayBuildMessage(Integer.parseInt(dieSet[1]));
+                    this.customDice.add(build());
                 }
-
-                this.numSides = suggestion;
-            }
-
-            sideUp = setSideUp();
-            
-            if (numSides == 100)
-            {
-                System.out.println("Creating percentile die (a special d10)...");
-            }
-            else
-            {
-                System.out.println(String.format("Creating a d%d...", this.numSides));
             }
         }
 
+        // Get custom dice list
+        public static List<Die> getCustomDice()
+        {
+            return customDice;
+        }
         // Get the current side up
         private int getSideUp()
         {
@@ -175,6 +172,72 @@ public class Die
         {
             Die die = new Die(this);
             return die;
+        }
+
+        // Find closest dice matching what was requested
+        private int findClosestSides(int numSides)
+        {
+            int delta = 0;
+            int suggestion = 0;
+            // If the numSides requested isn't valid, find and provide the first die closest to numSides
+            for (int size : validSizes)
+            {
+                if (delta == 0)
+                {
+                    delta = Math.abs(numSides - size);
+                    suggestion = size;
+                }
+                else
+                {
+                    if (Math.abs(numSides - size) < delta)
+                    {
+                        delta = Math.abs(numSides - size);
+                        suggestion = size;
+                    }
+                }
+            }
+
+            return suggestion;
+        }
+    
+        // Display dice build message
+        private void displayBuildMessage(int numSides)
+        {
+            if (Arrays.stream(validSizes).anyMatch(x -> x == numSides))
+            {
+                this.numSides = numSides;
+            }
+            else
+            {
+                this.numSides = findClosestSides(numSides);
+            }
+
+            sideUp = setSideUp();
+            
+            if (numSides == 100)
+            {
+                System.out.println("Creating percentile die (a special d10)...");
+            }
+            else
+            {
+                System.out.println(String.format("Creating a d%d...", this.numSides));
+            }
+        }
+    
+        // Roll all custom dice
+        public static void rollAll()
+        {
+            for (Die die : getCustomDice())
+            {
+                die.roll();
+            }
+        }
+
+        // Reset the custom dice sset
+        public static void resetDice()
+        {
+            customDice.clear();
+            System.out.println("Dice reset...");
         }
     }
 }
