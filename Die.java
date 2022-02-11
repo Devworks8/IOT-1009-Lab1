@@ -41,11 +41,7 @@ public class Die
     // Get the total number of side of the die
     public int getNumSides()
     {
-        if (numSides < 2)
-        {
-            return numSides;
-        }
-        return 0;
+        return numSides;
     }
 
     // Roll the die
